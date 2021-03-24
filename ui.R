@@ -3,15 +3,13 @@
 
 library(shiny)
 shinyUI(fluidPage(
-  
   #Hindergrund 
   theme = "bootstrap.css",
   h1("Renditeanalyse: Wertpapiere", 
      style = "font-family: 'Lobster', Harlow Solid Italic;
       line-height: 1.1; 
      color: green;"),
-  
-  
+   
   sidebarLayout(
     
     sidebarPanel(
@@ -22,9 +20,7 @@ shinyUI(fluidPage(
       br(),
       #Alle in Server Datei beschriebene Konfigurationen abrufen
     uiOutput("Liste")
-    ),
-    
-    
+    ),  
     
   mainPanel(
     #alle Schaltflaeche und dazugehoerige Funktionen abrufen
