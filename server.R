@@ -7,10 +7,8 @@ library(ggplot2)
 shinyServer(function(input, output, session) {
   #input und Ziel Ordner festlegen
   setwd("C:/Users/Himel/OneDrive/Studium/Bachelor (Wirtschaftsmathematik - B Sc.)/7. Semester/Seminararbeit/Shiny/Chartser_GOOG")
-  
   invisible(Sys.setlocale("LC_MESSAGES", "C"))
   invisible(Sys.setlocale("LC_TIME", "C"))
-  
   
   #Aktuelle Zeit_Funktion
   output$Aktuelle_Zeit <- renderText({
@@ -20,7 +18,6 @@ shinyServer(function(input, output, session) {
   
   #Funktion fuer Konfidenzintervall_Plot
   f <- function( x,n, n.draw, conf.level){
-    
     mu <- mean(x)
     SD <- sqrt(var(x))
     set.seed(1000)
@@ -30,40 +27,32 @@ shinyServer(function(input, output, session) {
     plot(range(KKonfidenz_Intervall), c(0, 1 + n.draw), type = "n", xlab = "Intervallaenge",
          ylab = "Stichprobenumfang", main = "Konfidenzintervalle", xlim = c(-0.04,0.04))
     for (i in 1:n.draw) {
-      
       if(KKonfidenz_Intervall[1, i]>mu ||  KKonfidenz_Intervall[2, i]<mu) {lines(KKonfidenz_Intervall[, i], rep(i, 2), lwd = 2, col = "red")}
       else{lines(KKonfidenz_Intervall[, i], rep(i, 2), lwd = 2, col = "blue")}
     }
-    abline(v = mu, lwd = 2, lty = 2, col = "black")
-    
+    abline(v = mu, lwd = 2, lty = 2, col = "black")  
   }
    
   #Funktion fuer Veranschaulichung von Ueberschreitungswahrscheinlichkeit:
   f1<- function(x,alpha, mu0){
-    
     #stichprobenumfang:
     n <- length(x);n
     s0 <- sqrt(var(x)) #sigma bekannt
-    
     #Gauss.test(): Funktion fuer Gauss test
     t <-Gauss.test(x, y = NULL, mean = mu0,
                    sd = s0, alternativ = "two.sided")
-    
     p.value <-as.numeric(t$p.value)
     par(mfrow = c(1,1), bg = "white")
     curve(dnorm(x), from = -5, to = 5, ylab="f(x)", xlab=" ", 
           lwd=2, axes = F, col = "blue")
-    
     legend("topright", inset=.08, title="Wahrscheinlichkeit",
            c("Aplha", "P_Value"), fill=c("blue","darkred"), ncol = 1,bg = 'lightblue')
-    
     text(-3, 0.3,expression(f(x) == frac(1, sqrt(2*pi))* 
                               ~~ exp(- ~~ frac(1, 2)~x^2)), cex = 1.2)
     mtext(expression(paste("Hypothesentest: ",H[0],
                            ": ", mu == mu[0],~", ",alpha," (blau), ",
                            "P-Value  ",  "(rot)")), 
           cex = 1.2, line = 1, col = "darkblue")
-    
     axis(2)
     lines(c(-6,140), c(0,0), col = "black", lwd= 2)
     xval <- seq(-5,5, 0.01)
@@ -81,16 +70,13 @@ shinyServer(function(input, output, session) {
     polygon(xarea, yarea, col = "darkblue", angle=135)
     text(2.5, 0.07,expression(paste(frac(1,2),~ alpha)),
          col = "darkblue", cex = 1.2 )
-    
-    
     xval <- seq(-5, qnorm(alpha/2), 0.01)
     xarea <- c( xval, qnorm(alpha/2))
     yarea <- c(dnorm(xval), 0)
     polygon(xarea, yarea, col = "darkblue", angle=135)
     text(-2.5, 0.07,expression(paste(frac(1,2),~ alpha)),
          col = "darkblue" ,cex = 1.2)
-    text(mu,-0.01, expression( mu ==0), cex = 1)
-      
+    text(mu,-0.01, expression( mu ==0), cex = 1)  
     #Bereich der uberschreitungswahrscheinlichkeit Scharffieren:
     xval <- seq(qnorm(p.value/2, lower.tail = F), 5, 0.01)
     xarea <- c(qnorm(p.value/2, lower.tail = F), xval)
@@ -110,13 +96,11 @@ shinyServer(function(input, output, session) {
             density = 10, lwd = 2)
     text(-1.95, 0.17, expression(paste(frac(1,2),~ "p-Val")),
          col = "darkred", cex = 1.2)
-    
   }
   
   #Liste aller Schaltflaeche
   output$Liste <- renderUI({
-    switch(input$tab,
-           
+    switch(input$tab,  
            "Gauss_VS_t" = Gauss_VS_t,
            "Aktienkurs.csv" = Aktienkurs.csv,
            "Aktienkurs1" = Aktienkurs1,
@@ -127,8 +111,7 @@ shinyServer(function(input, output, session) {
            "Aktienkurs2" = Aktienkurs2,
            "RenditeVergleich Plot" = RenditeVergleich_Plot,
            "t-Test(2-Sample)" = Hypotest1,
-           "Hilfe" = Hilfe
-           
+           "Hilfe" = Hilfe     
     )
   })
   
@@ -144,9 +127,7 @@ shinyServer(function(input, output, session) {
                     min = 1,
                     max = 30,
                     value = 1,animate = animationOptions(interval = 300, loop = FALSE, playButton = NULL)),
-        
         br(), br(),br(),br(),br(),br(),br(),br()
-        
         )
 
 #Benutzeroberflaeche zum Hochladen der CSV Datei konfigurieren
@@ -160,13 +141,8 @@ Aktienkurs.csv <- div(fileInput('Datei', div('Waehle eine CSV Datei aus', style 
                                      ';'),
                       br(),
                         numericInput("n", div("Anzahl der Stichprobe zum Zeigen:", style = "color:darkorange"), 18),
-                      br(),br(), br(),br(),br(),br(),br(),br()
-                      
-                      
-                        
+                      br(),br(), br(),br(),br(),br(),br(),br()                                                               
                        )                     
-  
- 
   
 #Benutzeroberflaeche fuer die Tabelle der Aktienkurse konfigurieren
   Aktienkurs1 <-  div(
@@ -186,9 +162,7 @@ Aktienkurs.csv <- div(fileInput('Datei', div('Waehle eine CSV Datei aus', style 
     br(),
     br(),
     tags$style(type='text/css', '#herunterladen_Stock {background-color: darkgreen; color: white;}'), 
-    downloadButton('herunterladen_Stock', 'Herunterladen: Data')
-    
-    
+    downloadButton('herunterladen_Stock', 'Herunterladen: Data')  
   )
   
 #Benutzeroberflaeche fuer Kurs-Rendite-Plot konfigurieren
@@ -251,8 +225,6 @@ KURS_Rendite_plot <- div( helpText(h4(div("Geben Sie eine gueltige Aktienname un
                    "95%" = "b",
                    "99%" = "c"))
   )   
-  
-  
   
   #Benutzeroberflaeche fuer die Tabelle des Hypothesentests konfigurieren
   Hypotest <- div(
