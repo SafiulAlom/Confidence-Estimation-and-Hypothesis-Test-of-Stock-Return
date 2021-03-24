@@ -1,7 +1,3 @@
-
-#===================================Shiny App==============================================
-
-
 #Installiere noetige Pakete
 library(shiny)
 library(quantmod)
@@ -22,7 +18,6 @@ shinyServer(function(input, output, session) {
     paste("-------------------","Aktuelle Uhrzeit: ", Sys.time(),"--------------------")
   })
   
-  
   #Funktion fuer Konfidenzintervall_Plot
   f <- function( x,n, n.draw, conf.level){
     
@@ -42,8 +37,7 @@ shinyServer(function(input, output, session) {
     abline(v = mu, lwd = 2, lty = 2, col = "black")
     
   }
-  
-  
+   
   #Funktion fuer Veranschaulichung von Ueberschreitungswahrscheinlichkeit:
   f1<- function(x,alpha, mu0){
     
@@ -96,9 +90,7 @@ shinyServer(function(input, output, session) {
     text(-2.5, 0.07,expression(paste(frac(1,2),~ alpha)),
          col = "darkblue" ,cex = 1.2)
     text(mu,-0.01, expression( mu ==0), cex = 1)
-    
-    
-    
+      
     #Bereich der uberschreitungswahrscheinlichkeit Scharffieren:
     xval <- seq(qnorm(p.value/2, lower.tail = F), 5, 0.01)
     xarea <- c(qnorm(p.value/2, lower.tail = F), xval)
@@ -121,8 +113,6 @@ shinyServer(function(input, output, session) {
     
   }
   
-  
-  
   #Liste aller Schaltflaeche
   output$Liste <- renderUI({
     switch(input$tab,
@@ -142,8 +132,6 @@ shinyServer(function(input, output, session) {
     )
   })
   
-  
-  
   #Benutzeroberflaeche fuer Gauss vs. t-Verteilung konfigurieren
   Gauss_VS_t <- div(
         numericInput("unter", div("Untere Grenze fuer X-Werte", style = "color:darkorange"), -4),
@@ -160,10 +148,8 @@ shinyServer(function(input, output, session) {
         br(), br(),br(),br(),br(),br(),br(),br()
         
         )
-  
 
-
-  #Benutzeroberflaeche zum Hochladen der CSV Datei konfigurieren
+#Benutzeroberflaeche zum Hochladen der CSV Datei konfigurieren
 Aktienkurs.csv <- div(fileInput('Datei', div('Waehle eine CSV Datei aus', style = "color:darkorange"),
                                   accept=c('.csv'), buttonLabel = "Durchsuchen", placeholder = "keine Datei ausgewaehlt"),
                          br(),
@@ -205,9 +191,6 @@ Aktienkurs.csv <- div(fileInput('Datei', div('Waehle eine CSV Datei aus', style 
     
   )
   
-  
-  
-  
 #Benutzeroberflaeche fuer Kurs-Rendite-Plot konfigurieren
 KURS_Rendite_plot <- div( helpText(h4(div("Geben Sie eine gueltige Aktienname und Zeitdauer ein", style = "color:darkturquoise"))),
                             helpText("Informationen stammen aus google/Yahoo finance."),
@@ -232,9 +215,7 @@ KURS_Rendite_plot <- div( helpText(h4(div("Geben Sie eine gueltige Aktienname un
                           tags$style(type='text/css', '#herunterladen_Plot1{background-color: darkgreen; color: white;}'), 
                           downloadButton('herunterladen_Plot1', 'Herunterladen: Plot 2')
   )
-  
-  
-  
+   
 #Benutzeroberflaeche fuer Konfidenzintervall konfigurieren
   Konfidenzintervall <- div(
     
@@ -254,8 +235,7 @@ KURS_Rendite_plot <- div( helpText(h4(div("Geben Sie eine gueltige Aktienname un
                 div("Anzahl der KI:", style = "color:darkorange"),
                 min = 1,
                 max = 100,
-                value = 5, step = 1, animate=animationOptions(interval=100, loop=F)),
-    
+                value = 5, step = 1, animate=animationOptions(interval=100, loop=F)),  
     br(),
     
     sliderInput("Stichprobe",
@@ -263,7 +243,6 @@ KURS_Rendite_plot <- div( helpText(h4(div("Geben Sie eine gueltige Aktienname un
                 min = 1,
                 max = 100,
                 value = 5, step = 1,  animate=animationOptions(interval=100, loop=F)),
-    
     br(), 
     br(),
     
@@ -271,14 +250,12 @@ KURS_Rendite_plot <- div( helpText(h4(div("Geben Sie eine gueltige Aktienname un
                  c("90%" = "a",
                    "95%" = "b",
                    "99%" = "c"))
-    
   )   
   
   
   
   #Benutzeroberflaeche fuer die Tabelle des Hypothesentests konfigurieren
   Hypotest <- div(
-    
     helpText(h4(div("Geben Sie eine gueltige Aktienname und Zeitdauer ein", style = "color:darkturquoise"))),
     helpText("Informationen stammen aus google/Yahoo finance."),
     textInput("symb", div(" Wertpapiername", style = "color:darkorange"), value = "AMZN"),
@@ -299,7 +276,6 @@ KURS_Rendite_plot <- div( helpText(h4(div("Geben Sie eine gueltige Aktienname un
                    "1%" = 0.01,
                    "0.1%" = 0.001
                  )))
-  
   
  #Benutzeroberflaeche fuer das Plot der Ueberschreitungswahrscheinlichkeit konfigurieren 
   p_Val <- div(
@@ -323,12 +299,8 @@ KURS_Rendite_plot <- div( helpText(h4(div("Geben Sie eine gueltige Aktienname un
                 max = 1,
                 value = 0.05, step = 0.01, animate = animationOptions(interval = 200, loop = FALSE, playButton = NULL)))
   
-  
-  
   #Benutzeroberflaeche fuer die Tabelle der aktienkurse konfigurieren
   Aktienkurs2 <- div(
-    
-    
     helpText(h4(div("Geben Sie eine gueltige Aktienname und Zeitdauer ein", style = "color:darkturquoise"))),
     helpText("Informationen stammen aus google/Yahoo finance."),
     textInput("symb", div("Gib Wertpapiername ein", style = "color:darkorange"), "AMZN"),
@@ -349,12 +321,8 @@ KURS_Rendite_plot <- div( helpText(h4(div("Geben Sie eine gueltige Aktienname un
     downloadButton('herunterladen_Stock', 'Herunterladen: Data 1'),
     tags$style(type='text/css', '#herunterladen_Stock1{background-color: darkgreen; color: white;}'), 
     downloadButton('herunterladen_Stock1', 'Herunterladen: Data 2')
-    
-    
   )
-  
  
-  
   #Benutzeroberflaeche der Rendite-Vergleivh-Plot konfigurieren
   RenditeVergleich_Plot <- div(
     
@@ -379,14 +347,11 @@ KURS_Rendite_plot <- div( helpText(h4(div("Geben Sie eine gueltige Aktienname un
     tags$style(type='text/css', '#herunterladen_Plot1{background-color: darkgreen; color: white;}'),
     downloadButton('herunterladen_Plot1', 'Herunterladen: Plot 1'),
     tags$style(type='text/css', '#herunterladen_Plot2{background-color: darkgreen; color: white;}'), 
-    downloadButton('herunterladen_Plot2', 'Herunterladen: Plot 2')
-    
+    downloadButton('herunterladen_Plot2', 'Herunterladen: Plot 2') 
   )
-  
   
   #Benutzeroberflaeche fuer die Tabelle der Zweistichprobentest konfigurieren
   Hypotest1 <-div(
-    
     helpText(h4(div("Geben Sie eine gueltige Aktienname und Zeitdauer ein", style = "color:darkturquoise"))),
     helpText("Informationen stammen aus google/Yahoo finance."),
     textInput("symb", div(" Wertpapiername", style = "color:darkorange"), value = "AMZN"),
@@ -404,16 +369,12 @@ KURS_Rendite_plot <- div( helpText(h4(div("Geben Sie eine gueltige Aktienname un
     br(),
     numericInput("muh", div("Eingabe Erwartungswert", style = "color:darkorange"), value = 0.01),
     br(),
-    
-  
     radioButtons("conf", div("Alpha:", style = "color:darkorange"),
                  c("5%" = 0.05,
                    "1%" = 0.01,
                    "0.1%" = 0.001
                  ))
   )
-  
-  
   
   #Die Quelle, die als Hilfe genommen wurden
   Hilfe <- div(     helpText(h5(div("Zur Erstellung dieses Apps wurden Die folgenden Quelle als Hilfe genommen", style = "color:darkturquoise"))),
@@ -424,10 +385,6 @@ KURS_Rendite_plot <- div( helpText(h4(div("Geben Sie eine gueltige Aktienname un
                                "Shiny Gallery" = "https://shiny.rstudio.com/gallery/"
                              ), selected = character(0)))
   
-  
-  
-  
- 
  #Aktienkurse aus dem Internet einlesen
 Stock_Price <- reactive({
   getSymbols(input$symb, src = input$source, 
@@ -436,7 +393,6 @@ Stock_Price <- reactive({
              auto.assign = FALSE)
   
 })
-
 
 #Aktienkurse aus dem Internet einlesen
 Stock_Price1 <- reactive({
@@ -447,23 +403,19 @@ Stock_Price1 <- reactive({
   
 })
 
-
 #Spalte der Schlusskurs
 Input_stock <- reactive({
   
   data <- Stock_Price()
   close <- paste(input$symb,".Close",sep="")
-  data <- data[, close, drop=F]
-  
+  data <- data[, close, drop=F] 
 })
 
 #Spalte der Schlusskurs
 Input_stock1 <- reactive({
-  
   data <- Stock_Price1()
   close <- paste(input$symb2,".Close",sep="")
   data <- data[, close, drop=F]
-  
 })
 
 #Aktien-Logrendite berechnen
@@ -476,10 +428,8 @@ Input_return <- reactive({
   obs <- obs[2:length(obs)]
 })
 
-
 #Aktien-Logrendite berechnen
 Input_return1 <- reactive({
-  
   obs <- Input_stock1()
   obs <- as.numeric(na.omit(obs))
   obs <- diff(log(obs))
@@ -488,12 +438,10 @@ Input_return1 <- reactive({
   obs <- obs[2:length(obs)]
 })
 
-
 #Liste zweier Aktienkurse
 Input_return2 <-reactive({
   obs <- list(Input_return(),Input_return1())
 })
-
 
 #Zusammengesetzte Tabelle der Aktienkurse und Aktienrendite
 Stock_Price3 <-reactive({
@@ -503,10 +451,7 @@ Stock_Price3 <-reactive({
   Return <- obs[,1]
   obs <-data.frame(Stock_Price(),Return)
   obs
-  
 })
-
-
 
 runTTest <- reactive({
   obs <- Input_return()
@@ -514,15 +459,12 @@ runTTest <- reactive({
   test <- t.test(obs, conf.level=level, mu = input$muh) 
 })
   
-
 #Funktion der t-Test
 runTTest1 <- reactive({
   obs <- Input_return2()
   level <- 1-as.numeric(input$conf)
   test <- t.test(obs[[1]], obs[[2]],var.equal = T, conf.level=level, mu = input$muh)
 })
-
-
 
 #Konfidenznivau festlegen
 KI_Nivau <-reactive({
@@ -533,7 +475,6 @@ KI_Nivau <-reactive({
          c = 0.99,
          0.95)
 })
-
 
 #Plot zur Approximation der t-Verteilung durch Standard-Normalverteilung
 output$Gauss_VS_t <- renderPlot({
@@ -546,39 +487,29 @@ output$Gauss_VS_t <- renderPlot({
          ncol = 1,  col = c("blue", "darkgreen"),bg = 'lightblue')
 }, height = 540)
 
-
-
 #CSV Datei Einlesen
 output$Aktienkurs.csv <- renderTable({
   Datei <- input$Datei
-  
   if (is.null(Datei))
     return(NULL)
   Datei <-read.csv(Datei$datapath,  sep=input$Trenner)
-  
   head(Datei, input$n)
 })
-
-
 
 output$Aktienkurs1 <- renderTable({
   data <- Stock_Price3()
   head(data, n = input$obs)
 })
 
-
 #Datei Herunterladen
 output$herunterladen_Stock <- downloadHandler(
   filename = function() { 
     paste(input$symb, '.csv', sep='')
   },
-  
   content = function(file) {
     write.csv(Stock_Price(), file)
   }
 )
-
-
 
 output$herunterladen_Stock1 <- downloadHandler(
   filename = function() { 
@@ -590,18 +521,15 @@ output$herunterladen_Stock1 <- downloadHandler(
   }
 )
 
-
 #Plot Herunterladen
 output$herunterladen_Plot <- downloadHandler(
   filename = function() { paste(input$symb, '.png', sep='') },
   content = function(file) {
     png(file)
     chartSeries(Input_stock(),  name = input$symb)
-    dev.off()
-    
+    dev.off()  
   }
 )
-
 
 output$herunterladen_Plot1 <- downloadHandler(
   filename = function() { paste(input$symb, '.png', sep='') },
@@ -610,8 +538,7 @@ output$herunterladen_Plot1 <- downloadHandler(
     data <-diff(log(data))
     png(file)
     chartSeries(data,  name = paste(input$symb,".Return"), up.col = "red")
-    dev.off()
-    
+    dev.off()  
   }
 )
 
@@ -623,17 +550,13 @@ output$herunterladen_Plot2 <- downloadHandler(
     png(file)
     chartSeries(data,  name = paste(input$symb2,".Return"), up.col = "red")
     dev.off()
-    
   }
 )
-
 
 #Aktienkurs Plot
 output$KURS_Rendite_plot <- renderPlot({
   chartSeries(Input_stock(), name = input$symb)
 }, height = 263)
-
-
 
 #Rendite Plot
 output$KURS_Rendite_plot_1 <- renderPlot({
@@ -642,14 +565,12 @@ output$KURS_Rendite_plot_1 <- renderPlot({
     chartSeries(data,  name = paste(input$symb,".Return"), up.col = "red")
   }, height = 263)
   
- 
  #Konfidenzitervall Plot
 output$Konfidenzintervall <- renderPlot({
     conf <- KI_Nivau()
     f(Input_return(),input$Stichprobe,input$bins, conf)
   }, height =660) 
   
- 
 #Zusammenfassung der eingelesenen Datei
 inputSummary <- reactive({
   obs <- Input_return()
@@ -665,9 +586,7 @@ inputSummary <- reactive({
     "Standard_error" = ses)
   names(summary) <- c("Aktien_Name","Mittelwert", "Stichprobenanzahl", "Varianz", "Standardabweichung")
   summary
-  
 })
-
 
 #Hypothesentest (Einfacher t-Test)
 outputSummary <- reactive({
@@ -683,25 +602,19 @@ outputSummary <- reactive({
   
 })
 
-
 #Konfidenzintervalle
 ciSummary <- reactive({
   test <- runTTest()
   summary <- data.frame(
-    
     "Alpha_pc"=100*as.numeric(input$conf),
     "LowerBound"= test$conf.int[1],
     "PointEstimate"=test$estimate,
     "UpperBound"=test$conf.int[2],
-    "Intervalllaenge" = test$conf.int[2]-test$conf.int[1]
-    
+    "Intervalllaenge" = test$conf.int[2]-test$conf.int[1] 
   )
-  
   names(summary) <- c("alpha", "Untere_Grenze", "Punktschaetzer", "Obere_Grenze", "Intervalllaenge")
   summary
 })
-
-
 
 ciMethode <- reactive({
   test <- runTTest()
@@ -715,28 +628,22 @@ output$inmethod <- renderText({
   results 
 })
 
-
 output$inpSum <- renderTable({
   results <- inputSummary()
   data.frame(results)
 },digits = 4)
-
 output$inpSum01 <- renderTable({
   results <- inputSummary()
   data.frame(results)
 },digits = 4)
-
-
 output$outSum <- renderTable({
   results <- outputSummary()
   data.frame(results)
 },digits = 4)
 
-
 output$ciSum <- renderTable({
   results <- ciSummary()
 }, digits = 4)
-
 
 #Testsentscheidung
 output$hypothesis <- renderPrint({
@@ -749,37 +656,25 @@ output$hypothesis <- renderPrint({
   results 
 })
 
-
-
 output$p_Value <- renderPlot({
   f1(Input_return(),input$alpha, input$muh)
 }, height = 600)
 
-
-
 output$Aktienkurs2 <- renderUI({
-  
   table1 <- renderTable({
     data <- Stock_Price()
     head(data, n = input$obs1)
-    
   })
   table2 <- renderTable({
     data <- Stock_Price1()
     head(data, n = input$obs1)
-    
   })
-  
-  
   
 tabsetPanel( 
     tabPanel(paste(input$symb), table1 ),
     tabPanel(paste(input$symb2), table2)
   )
-  
 })
-
-
 
 output$RenditeVergleich_Plot <- renderPlot({
     data <- Input_stock()
@@ -787,13 +682,11 @@ output$RenditeVergleich_Plot <- renderPlot({
     chartSeries(data,  name = paste(input$symb,".Return"), up.col = "red", theme = "black")
   }, height = 255)
   
-  
 output$RenditeVergleich_Plot1 <- renderPlot({
          data <-Input_stock1()
     data <-diff(log(data))
     chartSeries(data,  name = paste(input$symb2,".Return"), up.col = "green", theme = "black")
   }, height = 255)
-  
   
 #Zusammenfassung der Datei 
 inputSummary1 <- reactive({
@@ -827,7 +720,6 @@ inputSummary1 <- reactive({
     summary
   })
   
-  
   #Konfidenzintervalle fuer die Differenz der erwarteten Rendite
   ciSummary1 <- reactive({
     test <- runTTest1()
@@ -840,17 +732,13 @@ inputSummary1 <- reactive({
     )
     names(Summary) <- c("alpha", "Untere_Grenze", "Punktschaetzer", "Obere_Grenze", "Intervalllaenge")
     Summary
-
-  })
-  
-
+})
   
 ciMethode1 <- reactive({
     test <- runTTest1()
     "Methode" = test$method
   })
 
-  
 #Test-Methode
 output$inmethod1 <- renderText({
     results <- ciMethode1()
@@ -859,28 +747,21 @@ normalverteilter Zufallsvariablen mit gleicher Varianz (",results, ")")
     results 
   })
 
-
-
 output$inpSum1 <- renderTable({
     results <- inputSummary1()
     data.frame(results)
   },digits = 6)
-
-
 
 output$outSum1 <- renderTable({
     results <- outputSummary1()
     data.frame(results)
   })
   
-  
-  
 output$ciSum1 <- renderTable({
     results <- ciSummary1()
     data.frame(results)
   }, digits = 4)
-  
-  
+   
  #Testentscheidung 
 output$hypothesis1 <- renderPrint({
     test <- runTTest1()
@@ -891,17 +772,13 @@ output$hypothesis1 <- renderPrint({
       results <- paste0("Es liegt keinen Unterschied zwischen den Erwartungswerten bei einem Konfidenznivau von", (1-alpha), " vor")}
     results 
   })
-
-
+  
 #Funktion zum Aufrum einer Tnternet-Seite
 getPage<-function(x) {
   browseURL(x)
 }
-
-output$Hilfe<-renderUI({
   
+output$Hilfe<-renderUI({
   getPage(input$sourc)
 })
-  
- 
 })
